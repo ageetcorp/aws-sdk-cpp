@@ -452,6 +452,15 @@ WinHttpSyncHttpClient::WinHttpSyncHttpClient(const ClientConfiguration& config) 
 
         m_proxyUserName = StringUtils::ToWString(config.proxyUserName.c_str());
         m_proxyPassword = StringUtils::ToWString(config.proxyPassword.c_str());
+    } else {
+      if (IsWindows8Point1OrGreater()) {
+        AWS_LOGSTREAM_INFO(GetLogTag(),
+                           "Not using a proxy. Detected Windows 8.1 or greater. winhttpFlags = WINHTTP_ACCESS_TYPE_AUTOMATIC_PROXY");
+        winhttpFlags = WINHTTP_ACCESS_TYPE_AUTOMATIC_PROXY;
+      } else {
+        AWS_LOGSTREAM_INFO(GetLogTag(), "Not using a proxy. Detected Windows 8.0 or less. winhttpFlags = WINHTTP_ACCESS_TYPE_NO_PROXY");
+        winhttpFlags = WINHTTP_ACCESS_TYPE_NO_PROXY;
+      }
     }
 
     Aws::WString openString = StringUtils::ToWString(config.userAgent.c_str());

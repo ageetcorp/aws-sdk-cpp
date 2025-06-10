@@ -319,9 +319,7 @@ ClientConfiguration::ClientConfiguration(const ClientConfigurationInitValues &co
     setLegacyClientConfigurationParameters(*this);
     setConfigFromEnvOrProfile(*this);
 
-    if (!this->disableIMDS &&
-        region.empty() &&
-        Aws::Utils::StringUtils::ToLower(Aws::Environment::GetEnv("AWS_EC2_METADATA_DISABLED").c_str()) != "true")
+    if (false)
     {
         auto client = Aws::Internal::GetEC2MetadataClient();
         if (client)
